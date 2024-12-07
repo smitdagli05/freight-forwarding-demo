@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply a modern sans-serif font */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Make sure all elements have box-sizing border-box */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Add transitions to buttons */
+button {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Update form elements */
+input, textarea {
+  border: 1px solid #d1d5db; /* Tailwind's gray-300 */
+  padding: 0.5rem;
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #2563eb; /* Tailwind's blue-600 */
+}
+
+/* Update hover effects for clickable items */
+.hoverable:hover {
+  background-color: #f3f4f6; /* Tailwind's gray-100 */
+}
+
+  
