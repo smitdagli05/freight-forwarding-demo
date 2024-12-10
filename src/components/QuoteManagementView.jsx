@@ -1,5 +1,8 @@
+// freight-forwarding-demo/src/components/QuoteManagementView.jsx
+
 import React from 'react';
 import ConversationThread from './ConversationThread';
+import PropTypes from 'prop-types';
 
 const QuoteManagementView = ({
   carrierResponses,
@@ -9,8 +12,11 @@ const QuoteManagementView = ({
   messages,
   setMessages,
 }) => {
+  console.log('QuoteManagementView received carrierResponses:', carrierResponses); // Debugging
+  console.log('QuoteManagementView received responses:', responses); // Debugging
+
   const handleSimulateResponse = () => {
-    if (responses.length < carrierResponses.length) {
+    if (carrierResponses && responses.length < carrierResponses.length) {
       const newResponse = carrierResponses[responses.length];
       setResponses([...responses, newResponse]);
 
@@ -22,6 +28,8 @@ const QuoteManagementView = ({
         timestamp: newResponse.timestamp,
       };
       setMessages([...messages, newMessage]);
+    } else {
+      console.warn('No more carrier responses to simulate.');
     }
   };
 
@@ -56,13 +64,51 @@ const QuoteManagementView = ({
         <button
           onClick={handleSimulateResponse}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          disabled={responses.length >= carrierResponses.length}
+          disabled={!carrierResponses || responses.length >= carrierResponses.length}
         >
           Simulate New Carrier Response
         </button>
       </div>
     </div>
   );
+};
+
+QuoteManagementView.propTypes = {
+  carrierResponses: PropTypes.arrayOf(
+    PropTypes.shape({
+      carrier: PropTypes.string.isRequired,
+      rate: PropTypes.string.isRequired,
+      routing: PropTypes.string.isRequired,
+      transit: PropTypes.string.isRequired,
+      timestamp: PropTypes.string.isRequired,
+      channel: PropTypes.string,
+    })
+  ),
+  responses: PropTypes.arrayOf(
+    PropTypes.shape({
+      carrier: PropTypes.string.isRequired,
+      rate: PropTypes.string.isRequired,
+      routing: PropTypes.string.isRequired,
+      transit: PropTypes.string.isRequired,
+      timestamp: PropTypes.string.isRequired,
+      channel: PropTypes.string,
+    })
+  ).isRequired,
+  setResponses: PropTypes.func.isRequired,
+  onSelectQuote: PropTypes.func.isRequired,
+  messages: PropTypes.arrayOf(
+    PropTypes.shape({
+      sender: PropTypes.string.isRequired,
+      channel: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      timestamp: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setMessages: PropTypes.func.isRequired,
+};
+
+QuoteManagementView.defaultProps = {
+  carrierResponses: [],
 };
 
 export default QuoteManagementView;
